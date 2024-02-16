@@ -14,6 +14,8 @@
     backdrop-filter: blur(10px);
     overflow: hidden;
     text-overflow: ellipsis;
+    z-index: 10001; /* Higher than the measurement overlays */
+
 }
 
 .font-inspector-tooltip div {
