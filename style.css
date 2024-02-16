@@ -1,55 +1,85 @@
 .font-inspector-tooltip {
     position: absolute;
     padding: 12px 16px;
-    background: #333; /* Dark background */
-    color: #fff; /* White text */
+    background: rgba(51, 51, 51, 0.9);
+    color: #fff;
     z-index: 10000;
-    display: none;
+    display: block;
     border-radius: 8px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     line-height: 1.6;
     font-size: 14px;
-    max-width: 260px; /* Ensure it doesn't get too wide */
+    max-width: 260px;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .font-inspector-tooltip div {
     display: flex;
     align-items: center;
     margin-bottom: 8px;
+    flex-wrap: nowrap;
 }
 
 .font-inspector-tooltip div:last-child {
     margin-bottom: 0;
 }
 
+.keyboard-shortcut {
+    display: none;
+    background-color: #55555500;
+    font-size: 10px;
+    
+}
+
+/* Specific adjustments for the ⌘ and Ctrl symbols */
+.keyboard-shortcut.cmd::before {
+    content: '⌘+C';
+    display: inline;
+    font-size: 10px;
+    background-color: #55555500;
+
+}
+
+.keyboard-shortcut.ctrl::before {
+    content: 'Ctrl+C';
+    display: inline;
+    font-size: 10px;
+    background-color: #55555500;
+
+}
+
+.style {
+    font-size: 12px !important;
+    background-color: #55555500 !important;
+    color: rgba(255, 255, 255, 0.518) !important;
+}
+
 .font-inspector-tooltip span {
-    background-color: #555; /* Slightly lighter dark background for contrast */
+    background-color: #555;
     border-radius: 15px;
     padding: 4px 8px;
-    font-weight: normal; /* Avoid bold to keep it sleek */
+    font-weight: normal;
     margin-left: 8px;
     font-size: 12px;
+    display: inline-flex;
+    align-items: center;
 }
 
 .font-inspector-tooltip img {
-    filter: invert(100%); /* Make icons white */
+    filter: invert(100%);
     margin-right: 8px;
 }
 
-.copy-instruction {
-    display: inline-block;
-    background-color: #4A4A4A; 
-    color: #E0E0E0; /* Lighter text for visibility */
-    font-size: 12px;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-left: 8px;
-    user-select: none; /* Prevents the instruction text from being selected */
-    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
-}
+/* .copy-instruction {
+    color: #d5d5d5;
+    font-size: 10px;
+    margin-left: 4px;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+} */
 
-.copy-instruction:hover {
-    background-color: #575757; /* Slightly lighter on hover for interaction feedback */
-    color: #FFFFFF;
-}
+
