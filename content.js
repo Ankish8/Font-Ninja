@@ -8,24 +8,44 @@ function hasTextContent(element) {
 }
 
 function getFontProperties(element) {
+    // Check if the element is indeed an instance of Element
+    if (!(element instanceof Element)) {
+        console.error('getFontProperties was called with an invalid element:', element);
+        return {}; // Return an empty object or some default value to avoid further errors
+    }
+
     const style = window.getComputedStyle(element);
     return {
-        fontFamily: style.fontFamily.split(',')[0],
-        fontWeight: style.fontWeight === '400' ? 'Regular' : style.fontWeight,
+        fontFamily: style.fontFamily.split(',')[0], // Get only the first font if there's a list
+        fontWeight: style.fontWeight === '400' ? 'Regular' : style.fontWeight, // Convert '400' to 'Regular' for readability
         fontSize: style.fontSize,
         lineHeight: style.lineHeight,
         letterSpacing: style.letterSpacing,
         color: style.color
     };
 }
+function rgbToHex(rgb) {
+    // Check if the color is already in Hex format, return it directly
+    if (rgb.indexOf('#') === 0) return rgb.toUpperCase();
+
+    // Convert RGB(A) color to HEX
+    let rgbArray = rgb.match(/\d+/g);
+    let hex = rgbArray ? "#" + rgbArray.slice(0, 3).map(function(num) {
+        return ("0" + parseInt(num).toString(16)).slice(-2);
+    }).join('').toUpperCase() : rgb;
+
+    return hex;
+}
+
 
 function showTooltip(fontData, x, y) {
+    const colorHex = rgbToHex(fontData.color); // Convert color to Hex format
     tooltip.innerHTML = `
         <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik00MC00MHYtMjQwaDgwdi00MDBINDB2LTI0MGgyNDB2ODBoNDAwdi04MGgyNDB2MjQwaC04MHY0MDBoODB2MjQwSDY4MHYtODBIMjgwdjgwSDQwWm0yNDAtMTYwaDQwMHYtODBoODB2LTQwMGgtODB2LTgwSDI4MHY4MGgtODB2NDAwaDgwdjgwWm0zMi0xMjAgMTM2LTM2MGg2NGwxMzYgMzYwaC02MmwtMzItOTJINDA4bC0zMiA5MmgtNjRabTExNC0xNDRoMTA4bC01Mi0xNTBoLTRsLTUyIDE1MFpNMTIwLTc2MGg4MHYtODBoLTgwdjgwWm02NDAgMGg4MHYtODBoLTgwdjgwWm0wIDY0MGg4MHYtODBoLTgwdjgwWm0tNjQwIDBoODB2LTgwaC04MHY4MFptODAtNjQwWm01NjAgMFptMCA1NjBabS01NjAgMFoiLz48L3N2Zz4=">Font: ${fontData.fontFamily}<span>${fontData.fontWeight}</span></div>
         <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik01NjAtMTYwdi01MjBIMzYwdi0xMjBoNTIwdjEyMEg2ODB2NTIwSDU2MFptLTM2MCAwdi0zMjBIODB2LTEyMGgzNjB2MTIwSDMyMHYzMjBIMjAwWiIvPjwvc3ZnPg==">Size: ${fontData.fontSize}</div>
         <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik0yNDAtMTYwIDgwLTMyMGw1Ni01NiA2NCA2MnYtMzMybC02NCA2Mi01Ni01NiAxNjAtMTYwIDE2MCAxNjAtNTYgNTYtNjQtNjJ2MzMybDY0LTYyIDU2IDU2LTE2MCAxNjBabTI0MC00MHYtODBoNDAwdjgwSDQ4MFptMC0yNDB2LTgwaDQwMHY4MEg0ODBabTAtMjQwdi04MGg0MDB2ODBINDgwWiIvPjwvc3ZnPg==">Line Height: ${fontData.lineHeight}</div>
         <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik0xNjAtMTYwdi02NDBoODB2NjQwaC04MFptNTYwIDB2LTY0MGg4MHY2NDBoLTgwWk0yOTQtMjgwbDE1MC00MDBoNzJsMTUwIDQwMGgtNjlsLTM2LTEwMkgzOTlsLTM2IDEwMmgtNjlabTEyNi0xNjBoMTIwbC01OC0xNjZoLTRsLTU4IDE2NloiLz48L3N2Zz4=">Spacing: ${fontData.letterSpacing}</div>
-        <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik00ODAtODBxLTgyIDAtMTU1LTMxLjV0LTEyNy41LTg2UTE0My0yNTIgMTExLjUtMzI1VDgwLTQ4MHEwLTgzIDMyLjUtMTU2dDg4LTEyN1EyNTYtODE3IDMzMC04NDguNVQ0ODgtODgwcTgwIDAgMTUxIDI3LjV0MTI0LjUgNzZxNTMuNSA0OC41IDg1IDExNVQ4ODAtNTE4cTAgMTE1LTcwIDE3Ni41VDY0MC0yODBoLTc0cS05IDAtMTIuNSA1dC0zLjUgMTFxMCAxMiAxNSAzNC41dDE1IDUxLjVxMCA1MC0yNy41IDc0VDQ4MC04MFptMC00MDBabS0yMjAgNDBxMjYgMCA0My0xN3QxNy00M3EwLTI2LTE3LTQzdC00My0xN3EtMjYgMC00MyAxN3QtMTcgNDNxMCAyNiAxNyA0M3Q0MyAxN1ptMTIwLTE2MHEyNiAwIDQzLTE3dDE3LTQzcTAtMjYtMTctNDN0LTQzLTE3cS0yNiAwLTQzIDE3dC0xNyA0M3EwIDI2IDE3IDQzdDQzIDE3Wm0yMDAgMHEyNiAwIDQzLTE3dDE3LTQzcTAtMjYtMTctNDN0LTQzLTE3cS0yNiAwLTQzIDE3dC0xNyA0M3EwIDI2IDE3IDQzdDQzIDE3Wm0xMjAgMTYwcTI2IDAgNDMtMTd0MTctNDNxMC0yNi0xNy00M3QtNDMtMTdxLTI2IDAtNDMgMTd0LTE3IDQzcTAgMjYgMTcgNDN0NDMgMTdaTTQ4MC0xNjBxOSAwIDE0LjUtNXQ1LjUtMTNxMC0xNC0xNS0zM3QtMTUtNTdxMC00MiAyOS02N3Q3MS0yNWg3MHE2NiAwIDExMy0zOC41VDgwMC01MThxMC0xMjEtOTIuNS0yMDEuNVQ0ODgtODAwcS0xMzYgMC0yMzIgOTN0LTk2IDIyN3EwIDEzMyA5My41IDIyNi41VDQ4MC0xNjBaIi8+PC9zdmc+">Color: ${fontData.color}</div>
+        <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik00ODAtODBxLTgyIDAtMTU1LTMxLjV0LTEyNy41LTg2UTE0My0yNTIgMTExLjUtMzI1VDgwLTQ4MHEwLTgzIDMyLjUtMTU2dDg4LTEyN1EyNTYtODE3IDMzMC04NDguNVQ0ODgtODgwcTgwIDAgMTUxIDI3LjV0MTI0LjUgNzZxNTMuNSA0OC41IDg1IDExNVQ4ODAtNTE4cTAgMTE1LTcwIDE3Ni41VDY0MC0yODBoLTc0cS05IDAtMTIuNSA1dC0zLjUgMTFxMCAxMiAxNSAzNC41dDE1IDUxLjVxMCA1MC0yNy41IDc0VDQ4MC04MFptMC00MDBabS0yMjAgNDBxMjYgMCA0My0xN3QxNy00M3EwLTI2LTE3LTQzdC00My0xN3EtMjYgMC00MyAxN3QtMTcgNDNxMCAyNiAxNyA0M3Q0MyAxN1ptMTIwLTE2MHEyNiAwIDQzLTE3dDE3LTQzcTAtMjYtMTctNDN0LTQzLTE3cS0yNiAwLTQzIDE3dC0xNyA0M3EwIDI2IDE3IDQzdDQzIDE3Wm0yMDAgMHEyNiAwIDQzLTE3dDE3LTQzcTAtMjYtMTctNDN0LTQzLTE3cS0yNiAwLTQzIDE3dC0xNyA0M3EwIDI2IDE3IDQzdDQzIDE3Wm0xMjAgMTYwcTI2IDAgNDMtMTd0MTctNDNxMC0yNi0xNy00M3QtNDMtMTdxLTI2IDAtNDMgMTd0LTE3IDQzcTAgMjYgMTcgNDN0NDMgMTdaTTQ4MC0xNjBxOSAwIDE0LjUtNXQ1LjUtMTNxMC0xNC0xNS0zM3QtMTUtNTdxMC00MiAyOS02N3Q3MS0yNWg3MHE2NiAwIDExMy0zOC41VDgwMC01MThxMC0xMjEtOTIuNS0yMDEuNVQ0ODgtODAwcS0xMzYgMC0yMzIgOTN0LTk2IDIyN3EwIDEzMyA5My41IDIyNi41VDQ4MC0xNjBaIi8+PC9zdmc+">Color: <span id="colorHex" style="cursor: pointer;" title="Click to copy">${colorHex}</span></div>
     `;
     tooltip.style.left = `${x + 15}px`;
     tooltip.style.top = `${y + 15}px`;
@@ -37,6 +57,26 @@ function showTooltip(fontData, x, y) {
 function hideTooltip() {
     tooltip.style.display = 'none';
 }
+
+// Function to copy text to clipboard
+function copyTextToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        console.log('Color hex copied to clipboard');
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+    });
+}
+
+// Event listener to handle copy on click
+document.addEventListener('click', (event) => {
+    if (event.target.id === 'colorHex') {
+        copyTextToClipboard(event.target.textContent);
+        // Optional: Provide feedback to the user that the text was copied
+        event.target.title = "Copied!";
+        setTimeout(() => event.target.title = "Click to copy", 2000); // Reset title after 2 seconds
+    }
+});
+
 
 let currentHoveredElement = null; // To keep track of the currently hovered element
 
@@ -56,18 +96,29 @@ function removeUnderlineFromElement() {
     }
 }
 
-// Add event listener for mouseover to show tooltip and underline text
+
 document.addEventListener('mouseover', (event) => {
+    if (!isExtensionEnabled) return; // Stop functionality if disabled
+    
+    // Your existing mouseover logic...
     let target = event.target;
     let validTargetFound = false;
 
-    // Check if the target itself has text content directly
-    if (target.childNodes.length === 1 && target.childNodes[0].nodeType === Node.TEXT_NODE && target.childNodes[0].nodeValue.trim() !== '') {
-        validTargetFound = true;
-    } 
-    // Additional check for specific elements that are known to contain text directly
-    else if (['SPAN', 'P', 'A', 'LI', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BUTTON', 'LABEL'].includes(target.tagName)) {
-        validTargetFound = true;
+    // Check if Command (on Mac) or Control (on Windows) is pressed for nested text check
+    const isCommandOrCtrlPressed = event.metaKey || event.ctrlKey;
+
+    if (isCommandOrCtrlPressed) {
+        // Perform a deeper check to find text nodes within nested structures
+        if (target.childNodes.length && hasNestedText(target)) {
+            validTargetFound = true;
+        }
+    } else {
+        // Original check for direct text content or known text-containing elements
+        if (target.childNodes.length === 1 && target.childNodes[0].nodeType === Node.TEXT_NODE && target.childNodes[0].nodeValue.trim() !== '') {
+            validTargetFound = true;
+        } else if (['SPAN', 'P', 'A', 'LI', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BUTTON', 'LABEL'].includes(target.tagName)) {
+            validTargetFound = true;
+        }
     }
 
     if (validTargetFound) {
@@ -80,7 +131,35 @@ document.addEventListener('mouseover', (event) => {
     }
 });
 
-document.addEventListener('mouseout', () => {
+
+
+let isExtensionEnabled = false; // Default state is now false (disabled)
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.hasOwnProperty('enabled')) {
+        isExtensionEnabled = request.enabled;
+        if (!isExtensionEnabled) {
+            // Optional: Clear any visible tooltips or underlines
+            hideTooltip();
+            removeUnderlineFromElement();
+        }
+    }
+});
+
+document.addEventListener('mouseout', (event) => {
+    if (!isExtensionEnabled) return; // Stop functionality if disabled
+    
+    // Your existing mouseout logic...
     hideTooltip();
     removeUnderlineFromElement();
 });
+
+
+// Function to recursively check for nested text nodes within an element
+function hasNestedText(element) {
+    if (element.nodeType === Node.TEXT_NODE && element.nodeValue.trim() !== '') return true;
+    for (let child of element.childNodes) {
+        if (hasNestedText(child)) return true;
+    }
+    return false;
+}
