@@ -1,12 +1,35 @@
+let persistedElement = null;
+document.addEventListener('click', function(event) {
+    const targetElement = event.target;
+    // Check if the clicked element is a valid target and not the same as the currently persisted element
+    if (targetElement && targetElement !== document.body && targetElement !== document.documentElement && targetElement !== persistedElement) {
+        // Clear overlays from a previously persisted element
+        if (persistedElement) {
+            removeExistingOverlays(true); // Force removal of all overlays
+        }
+        persistedElement = targetElement; // Persist this element
+        showOverlayWithDimensions(persistedElement); // Show overlays for the new persisted element
+    } else if (targetElement === persistedElement) {
+        // Clicking the persisted element again removes its persistence
+        removeExistingOverlays(true); // Force removal of all overlays
+        persistedElement = null;
+    }
+});
+
 document.addEventListener('mouseover', function(event) {
     const targetElement = event.target;
     if (targetElement && targetElement !== document.body && targetElement !== document.documentElement) {
         showOverlayWithDimensions(targetElement);
     }
-});
+}); 
+
 
 function showOverlayWithDimensions(element) {
+    if (persistedElement && element !== persistedElement) {
+        return;
+    }
     removeExistingOverlays();
+    
 
     const rect = element.getBoundingClientRect();
 
@@ -69,10 +92,16 @@ function createMeasurementLine(x, y, length, isHorizontal, addText) {
     document.body.appendChild(line);
 }
 
-function removeExistingOverlays() {
-    const existingOverlays = document.querySelectorAll('.measurement-line, .measurement-corner-circle');
-    existingOverlays.forEach(overlay => overlay.remove());
+
+
+function removeExistingOverlays(forceRemove = false) {
+    if (forceRemove || !persistedElement) {
+        const existingOverlays = document.querySelectorAll('.measurement-line, .measurement-corner-circle');
+        existingOverlays.forEach(overlay => overlay.remove());
+    }
+    // If there is a persisted element and forceRemove is false, overlays for the persisted element remain
 }
+
 
 document.addEventListener('mouseout', function(event) {
     removeExistingOverlays();
