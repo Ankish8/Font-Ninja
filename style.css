@@ -36,3 +36,20 @@
     filter: invert(100%); /* Make icons white */
     margin-right: 8px;
 }
+
+.copy-instruction {
+    display: inline-block;
+    background-color: #4A4A4A; 
+    color: #E0E0E0; /* Lighter text for visibility */
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+    user-select: none; /* Prevents the instruction text from being selected */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+}
+
+.copy-instruction:hover {
+    background-color: #575757; /* Slightly lighter on hover for interaction feedback */
+    color: #FFFFFF;
+}

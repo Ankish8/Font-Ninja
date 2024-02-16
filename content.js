@@ -38,6 +38,8 @@ function rgbToHex(rgb) {
 }
 
 
+
+
 function showTooltip(fontData, x, y) {
     const colorHex = rgbToHex(fontData.color); // Convert color to Hex format
     tooltip.innerHTML = `
@@ -45,11 +47,13 @@ function showTooltip(fontData, x, y) {
         <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik01NjAtMTYwdi01MjBIMzYwdi0xMjBoNTIwdjEyMEg2ODB2NTIwSDU2MFptLTM2MCAwdi0zMjBIODB2LTEyMGgzNjB2MTIwSDMyMHYzMjBIMjAwWiIvPjwvc3ZnPg==">Size: ${fontData.fontSize}</div>
         <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik0yNDAtMTYwIDgwLTMyMGw1Ni01NiA2NCA2MnYtMzMybC02NCA2Mi01Ni01NiAxNjAtMTYwIDE2MCAxNjAtNTYgNTYtNjQtNjJ2MzMybDY0LTYyIDU2IDU2LTE2MCAxNjBabTI0MC00MHYtODBoNDAwdjgwSDQ4MFptMC0yNDB2LTgwaDQwMHY4MEg0ODBabTAtMjQwdi04MGg0MDB2ODBINDgwWiIvPjwvc3ZnPg==">Line Height: ${fontData.lineHeight}</div>
         <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik0xNjAtMTYwdi02NDBoODB2NjQwaC04MFptNTYwIDB2LTY0MGg4MHY2NDBoLTgwWk0yOTQtMjgwbDE1MC00MDBoNzJsMTUwIDQwMGgtNjlsLTM2LTEwMkgzOTlsLTM2IDEwMmgtNjlabTEyNi0xNjBoMTIwbC01OC0xNjZoLTRsLTU4IDE2NloiLz48L3N2Zz4=">Spacing: ${fontData.letterSpacing}</div>
-        <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik00ODAtODBxLTgyIDAtMTU1LTMxLjV0LTEyNy41LTg2UTE0My0yNTIgMTExLjUtMzI1VDgwLTQ4MHEwLTgzIDMyLjUtMTU2dDg4LTEyN1EyNTYtODE3IDMzMC04NDguNVQ0ODgtODgwcTgwIDAgMTUxIDI3LjV0MTI0LjUgNzZxNTMuNSA0OC41IDg1IDExNVQ4ODAtNTE4cTAgMTE1LTcwIDE3Ni41VDY0MC0yODBoLTc0cS05IDAtMTIuNSA1dC0zLjUgMTFxMCAxMiAxNSAzNC41dDE1IDUxLjVxMCA1MC0yNy41IDc0VDQ4MC04MFptMC00MDBabS0yMjAgNDBxMjYgMCA0My0xN3QxNy00M3EwLTI2LTE3LTQzdC00My0xN3EtMjYgMC00MyAxN3QtMTcgNDNxMCAyNiAxNyA0M3Q0MyAxN1ptMTIwLTE2MHEyNiAwIDQzLTE3dDE3LTQzcTAtMjYtMTctNDN0LTQzLTE3cS0yNiAwLTQzIDE3dC0xNyA0M3EwIDI2IDE3IDQzdDQzIDE3Wm0yMDAgMHEyNiAwIDQzLTE3dDE3LTQzcTAtMjYtMTctNDN0LTQzLTE3cS0yNiAwLTQzIDE3dC0xNyA0M3EwIDI2IDE3IDQzdDQzIDE3Wm0xMjAgMTYwcTI2IDAgNDMtMTd0MTctNDNxMC0yNi0xNy00M3QtNDMtMTdxLTI2IDAtNDMgMTd0LTE3IDQzcTAgMjYgMTcgNDN0NDMgMTdaTTQ4MC0xNjBxOSAwIDE0LjUtNXQ1LjUtMTNxMC0xNC0xNS0zM3QtMTUtNTdxMC00MiAyOS02N3Q3MS0yNWg3MHE2NiAwIDExMy0zOC41VDgwMC01MThxMC0xMjEtOTIuNS0yMDEuNVQ0ODgtODAwcS0xMzYgMC0yMzIgOTN0LTk2IDIyN3EwIDEzMyA5My41IDIyNi41VDQ4MC0xNjBaIi8+PC9zdmc+">Color: <span id="colorHex" style="cursor: pointer;" title="Click to copy">${colorHex}</span></div>
+        <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik00ODAtODBxLTgyIDAtMTU1LTMxLjV0LTEyNy41LTg2UTE0My0yNTIgMTExLjUtMzI1VDgwLTQ4MHEwLTgzIDMyLjUtMTU2dDg4LTEyN1EyNTYtODE3IDMzMC04NDguNVQ0ODgtODgwcTgwIDAgMTUxIDI3LjV0MTI0LjUgNzZxNTMuNSA0OC41IDg1IDExNVQ4ODAtNTE4cTAgMTE1LTcwIDE3Ni41VDY0MC0yODBoLTc0cS05IDAtMTIuNSA1dC0zLjUgMTFxMCAxMiAxNSAzNC41dDE1IDUxLjVxMCA1MC0yNy41IDc0VDQ4MC04MFptMC00MDBabS0yMjAgNDBxMjYgMCA0My0xN3QxNy00M3EwLTI2LTE3LTQzdC00My0xN3EtMjYgMC00MyAxN3QtMTcgNDNxMCAyNiAxNyA0M3Q0MyAxN1ptMTIwLTE2MHEyNiAwIDQzLTE3dDE3LTQzcTAtMjYtMTctNDN0LTQzLTE3cS0yNiAwLTQzIDE3dC0xNyA0M3EwIDI2IDE3IDQzdDQzIDE3Wm0yMDAgMHEyNiAwIDQzLTE3dDE3LTQzcTAtMjYtMTctNDN0LTQzLTE3cS0yNiAwLTQzIDE3dC0xNyA0M3EwIDI2IDE3IDQzdDQzIDE3Wm0xMjAgMTYwcTI2IDAgNDMtMTd0MTctNDNxMC0yNi0xNy00M3QtNDMtMTdxLTI2IDAtNDMgMTd0LTE3IDQzcTAgMjYgMTcgNDN0NDMgMTdaTTQ4MC0xNjBxOSAwIDE0LjUtNXQ1LjUtMTNxMC0xNC0xNS0zM3QtMTUtNTdxMC00MiAyOS02N3Q3MS0yNWg3MHE2NiAwIDExMy0zOC41VDgwMC01MThxMC0xMjEtOTIuNS0yMDEuNVQ0ODgtODAwcS0xMzYgMC0yMzIgOTN0LTk2IDIyN3EwIDEzMyA5My41IDIyNi41VDQ4MC0xNjBaIi8+PC9zdmc+">Color: <span id="colorHex" style="cursor: pointer;" title="Click to copy">${colorHex}</span><span class="copy-instruction">(Cmd+C to copy)</span></div>
     `;
     tooltip.style.left = `${x + 15}px`;
     tooltip.style.top = `${y + 15}px`;
     tooltip.style.display = 'block';
+    tooltip.setAttribute('tabindex', '-1'); // Make it focusable without affecting tab order
+    tooltip.focus();
 }
 
 
@@ -57,6 +61,21 @@ function showTooltip(fontData, x, y) {
 function hideTooltip() {
     tooltip.style.display = 'none';
 }
+
+tooltip.addEventListener('keydown', (event) => {
+    if ((event.metaKey || event.ctrlKey) && event.key === 'c') {
+        const colorHex = document.getElementById('colorHex').textContent;
+        copyTextToClipboard(colorHex).then(() => {
+            console.log('Color hex copied to clipboard');
+            // Provide visual feedback that the color was copied, e.g., briefly changing the tooltip background color or showing a message
+            tooltip.style.backgroundColor = "#e0e0e0"; // Temporary feedback
+            setTimeout(() => tooltip.style.backgroundColor = "", 500); // Revert after 0.5 seconds
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+        });
+    }
+});
+
 
 // Function to copy text to clipboard
 function copyTextToClipboard(text) {
