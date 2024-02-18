@@ -1,45 +1,43 @@
-function createToastNotification(message) {
-    const toast = document.createElement('div');
-    toast.className = 'extension-toast-notification';
-    toast.style.position = 'fixed';
-    toast.style.top = '20px';
-    toast.style.right = '20px';
-    toast.style.backgroundColor = '#333';
-    toast.style.color = '#fff';
-    toast.style.padding = '10px 20px';
-    toast.style.borderRadius = '5px';
-    toast.style.zIndex = '100000';
-    toast.style.display = 'flex';
-    toast.style.alignItems = 'center';
-    toast.style.justifyContent = 'space-between';
-    toast.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+chrome.runtime.onMessage.addListener((message) => {
+    if (message.hasOwnProperty('showNotification')) {
+        if (message.showNotification) {
+            showToastNotification();
+        } else {
+            hideToastNotification();
+        }
+    }
+});
 
-    const text = document.createElement('span');
-    text.textContent = message;
+function showToastNotification() {
+    const notification = document.createElement('div');
+    notification.id = 'extension-toast-notification';
+    notification.style.position = 'fixed';
+    notification.style.top = '16px';
+    notification.style.right = '16px';
+    notification.style.backgroundColor = '#37352f';
+    notification.style.color = 'white';
+    notification.style.padding = '12px 20px';
+    notification.style.borderRadius = '8px';
+    notification.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+    notification.style.zIndex = '10000';
+    notification.innerText = 'Extension is now active!';
 
-    const closeButton = document.createElement('button');
-    closeButton.textContent = '✕';
-    closeButton.style.border = 'none';
-    closeButton.style.backgroundColor = 'transparent';
-    closeButton.style.color = '#fff';
-    closeButton.style.cursor = 'pointer';
-    closeButton.style.marginLeft = '15px';
-    closeButton.style.fontSize = '16px';
+    const closeBtn = document.createElement('span');
+    closeBtn.innerText = '✖';
+    closeBtn.style.marginLeft = '16px';
+    closeBtn.style.cursor = 'pointer';
+    closeBtn.onclick = () => {
+        hideToastNotification();
+        chrome.runtime.sendMessage({ showNotification: false });
+    };
 
-    closeButton.addEventListener('click', () => {
-        toast.remove();
-        // Send a message to the background script to disable the extension
-        chrome.runtime.sendMessage({ disableExtension: true });
-    });
-
-    toast.appendChild(text);
-    toast.appendChild(closeButton);
-    document.body.appendChild(toast);
+    notification.appendChild(closeBtn);
+    document.body.appendChild(notification);
 }
 
-// In toastNotification.js
-setTimeout(() => {
-    createToastNotification('Extension is enabled');
-}, 1000); // Adjust the delay as needed
-
-// Create the toast notification when the script is injected
+function hideToastNotification() {
+    const notification = document.getElementById('extension-toast-notification');
+    if (notification) {
+        notification.remove();
+    }
+}

@@ -36,7 +36,9 @@ function getFontProperties(element) {
         fontSize: `${fontSizePx} (${fontSizeRem})`,
         lineHeight: style.lineHeight,
         letterSpacing: letterSpacing !== 'normal' ? letterSpacing : 'default',
-        color: style.color
+        color: style.color,
+        backgroundColor: style.backgroundColor
+
     };
 }
 
@@ -58,13 +60,16 @@ function rgbToHex(rgb) {
 
 function showTooltip(fontData, x, y) {
     const colorHex = rgbToHex(fontData.color); // Convert color to Hex format
+    const bgColorHex = rgbToHex(fontData.backgroundColor);
+
     tooltip.innerHTML = `
         <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik00MC00MHYtMjQwaDgwdi00MDBINDB2LTI0MGgyNDB2ODBoNDAwdi04MGgyNDB2MjQwaC04MHY0MDBoODB2MjQwSDY4MHYtODBIMjgwdjgwSDQwWm0yNDAtMTYwaDQwMHYtODBoODB2LTQwMGgtODB2LTgwSDI4MHY4MGgtODB2NDAwaDgwdjgwWm0zMi0xMjAgMTM2LTM2MGg2NGwxMzYgMzYwaC02MmwtMzItOTJINDA4bC0zMiA5MmgtNjRabTExNC0xNDRoMTA4bC01Mi0xNTBoLTRsLTUyIDE1MFpNMTIwLTc2MGg4MHYtODBoLTgwdjgwWm02NDAgMGg4MHYtODBoLTgwdjgwWm0wIDY0MGg4MHYtODBoLTgwdjgwWm0tNjQwIDBoODB2LTgwaC04MHY4MFptODAtNjQwWm01NjAgMFptMCA1NjBabS01NjAgMFoiLz48L3N2Zz4=">Font: ${fontData.fontFamily}<span>${fontData.fontWeight}</span></div>
         <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik01NjAtMTYwdi01MjBIMzYwdi0xMjBoNTIwdjEyMEg2ODB2NTIwSDU2MFptLTM2MCAwdi0zMjBIODB2LTEyMGgzNjB2MTIwSDMyMHYzMjBIMjAwWiIvPjwvc3ZnPg==">Size: ${fontData.fontSize}</div>
         <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik0yNDAtMTYwIDgwLTMyMGw1Ni01NiA2NCA2MnYtMzMybC02NCA2Mi01Ni01NiAxNjAtMTYwIDE2MCAxNjAtNTYgNTYtNjQtNjJ2MzMybDY0LTYyIDU2IDU2LTE2MCAxNjBabTI0MC00MHYtODBoNDAwdjgwSDQ4MFptMC0yNDB2LTgwaDQwMHY4MEg0ODBabTAtMjQwdi04MGg0MDB2ODBINDgwWiIvPjwvc3ZnPg==">Line Height: ${fontData.lineHeight}</div>
         <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik0xNjAtMTYwdi02NDBoODB2NjQwaC04MFptNTYwIDB2LTY0MGg4MHY2NDBoLTgwWk0yOTQtMjgwbDE1MC00MDBoNzJsMTUwIDQwMGgtNjlsLTM2LTEwMkgzOTlsLTM2IDEwMmgtNjlabTEyNi0xNjBoMTIwbC01OC0xNjZoLTRsLTU4IDE2NloiLz48L3N2Zz4=">Spacing: ${fontData.letterSpacing}</div>
-        <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik00ODAtODBxLTgyIDAtMTU1LTMxLjV0LTEyNy41LTg2UTE0My0yNTIgMTExLjUtMzI1VDgwLTQ4MHEwLTgzIDMyLjUtMTU2dDg4LTEyN1EyNTYtODE3IDMzMC04NDguNVQ0ODgtODgwcTgwIDAgMTUxIDI3LjV0MTI0LjUgNzZxNTMuNSA0OC41IDg1IDExNVQ4ODAtNTE4cTAgMTE1LTcwIDE3Ni41VDY0MC0yODBoLTc0cS05IDAtMTIuNSA1dC0zLjUgMTFxMCAxMiAxNSAzNC41dDE1IDUxLjVxMCA1MC0yNy41IDc0VDQ4MC04MFptMC00MDBabS0yMjAgNDBxMjYgMCA0My0xN3QxNy00M3EwLTI2LTE3LTQzdC00My0xN3EtMjYgMC00MyAxN3QtMTcgNDNxMCAyNiAxNyA0M3Q0MyAxN1ptMTIwLTE2MHEyNiAwIDQzLTE3dDE3LTQzcTAtMjYtMTctNDN0LTQzLTE3cS0yNiAwLTQzIDE3dC0xNyA0M3EwIDI2IDE3IDQzdDQzIDE3Wm0yMDAgMHEyNiAwIDQzLTE3dDE3LTQzcTAtMjYtMTctNDN0LTQzLTE3cS0yNiAwLTQzIDE3dC0xNyA0M3EwIDI2IDE3IDQzdDQzIDE3Wm0xMjAgMTYwcTI2IDAgNDMtMTd0MTctNDNxMC0yNi0xNy00M3QtNDMtMTdxLTI2IDAtNDMgMTd0LTE3IDQzcTAgMjYgMTcgNDN0NDMgMTdaTTQ4MC0xNjBxOSAwIDE0LjUtNXQ1LjUtMTNxMC0xNC0xNS0zM3QtMTUtNTdxMC00MiAyOS02N3Q3MS0yNWg3MHE2NiAwIDExMy0zOC41VDgwMC01MThxMC0xMjEtOTIuNS0yMDEuNVQ0ODgtODAwcS0xMzYgMC0yMzIgOTN0LTk2IDIyN3EwIDEzMyA5My41IDIyNi41VDQ4MC0xNjBaIi8+PC9zdmc+">Color: <span id="colorHex" style="cursor: pointer;" title="Click to copy">${colorHex}</span><span class="keyboard-shortcut style">⌘+C to copy</span>
-        </div>
+        <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik00ODAtODBxLTgyIDAtMTU1LTMxLjV0LTEyNy41LTg2UTE0My0yNTIgMTExLjUtMzI1VDgwLTQ4MHEwLTgzIDMyLjUtMTU2dDg4LTEyN1EyNTYtODE3IDMzMC04NDguNVQ0ODgtODgwcTgwIDAgMTUxIDI3LjV0MTI0LjUgNzZxNTMuNSA0OC41IDg1IDExNVQ4ODAtNTE4cTAgMTE1LTcwIDE3Ni41VDY0MC0yODBoLTc0cS05IDAtMTIuNSA1dC0zLjUgMTFxMCAxMiAxNSAzNC41dDE1IDUxLjVxMCA1MC0yNy41IDc0VDQ4MC04MFptMC00MDBabS0yMjAgNDBxMjYgMCA0My0xN3QxNy00M3EwLTI2LTE3LTQzdC00My0xN3EtMjYgMC00MyAxN3QtMTcgNDNxMCAyNiAxNyA0M3Q0MyAxN1ptMTIwLTE2MHEyNiAwIDQzLTE3dDE3LTQzcTAtMjYtMTctNDN0LTQzLTE3cS0yNiAwLTQzIDE3dC0xNyA0M3EwIDI2IDE3IDQzdDQzIDE3Wm0yMDAgMHEyNiAwIDQzLTE3dDE3LTQzcTAtMjYtMTctNDN0LTQzLTE3cS0yNiAwLTQzIDE3dC0xNyA0M3EwIDI2IDE3IDQzdDQzIDE3Wm0xMjAgMTYwcTI2IDAgNDMtMTd0MTctNDNxMC0yNi0xNy00M3QtNDMtMTdxLTI2IDAtNDMgMTd0LTE3IDQzcTAgMjYgMTcgNDN0NDMgMTdaTTQ4MC0xNjBxOSAwIDE0LjUtNXQ1LjUtMTNxMC0xNC0xNS0zM3QtMTUtNTdxMC00MiAyOS02N3Q3MS0yNWg3MHE2NiAwIDExMy0zOC41VDgwMC01MThxMC0xMjEtOTIuNS0yMDEuNVQ0ODgtODAwcS0xMzYgMC0yMzIgOTN0LTk2IDIyN3EwIDEzMyA5My41IDIyNi41VDQ4MC0xNjBaIi8+PC9zdmc+">Color: <span id="colorHex" style="cursor: pointer;" title="Click to copy">${colorHex}</span></div>
+        <div><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgLTk2MCA5NjAgOTYwIiB3aWR0aD0iMjQiPjxwYXRoIGQ9Ik00ODAtODBxLTgyIDAtMTU1LTMxLjV0LTEyNy41LTg2UTE0My0yNTIgMTExLjUtMzI1VDgwLTQ4MHEwLTgzIDMyLjUtMTU2dDg4LTEyN1EyNTYtODE3IDMzMC04NDguNVQ0ODgtODgwcTgwIDAgMTUxIDI3LjV0MTI0LjUgNzZxNTMuNSA0OC41IDg1IDExNVQ4ODAtNTE4cTAgMTE1LTcwIDE3Ni41VDY0MC0yODBoLTc0cS05IDAtMTIuNSA1dC0zLjUgMTFxMCAxMiAxNSAzNC41dDE1IDUxLjVxMCA1MC0yNy41IDc0VDQ4MC04MFptMC00MDBabS0yMjAgNDBxMjYgMCA0My0xN3QxNy00M3EwLTI2LTE3LTQzdC00My0xN3EtMjYgMC00MyAxN3QtMTcgNDNxMCAyNiAxNyA0M3Q0MyAxN1ptMTIwLTE2MHEyNiAwIDQzLTE3dDE3LTQzcTAtMjYtMTctNDN0LTQzLTE3cS0yNiAwLTQzIDE3dC0xNyA0M3EwIDI2IDE3IDQzdDQzIDE3Wm0yMDAgMHEyNiAwIDQzLTE3dDE3LTQzcTAtMjYtMTctNDN0LTQzLTE3cS0yNiAwLTQzIDE3dC0xNyA0M3EwIDI2IDE3IDQzdDQzIDE3Wm0xMjAgMTYwcTI2IDAgNDMtMTd0MTctNDNxMC0yNi0xNy00M3QtNDMtMTdxLTI2IDAtNDMgMTd0LTE3IDQzcTAgMjYgMTcgNDN0NDMgMTdaTTQ4MC0xNjBxOSAwIDE0LjUtNXQ1LjUtMTNxMC0xNC0xNS0zM3QtMTUtNTdxMC00MiAyOS02N3Q3MS0yNWg3MHE2NiAwIDExMy0zOC41VDgwMC01MThxMC0xMjEtOTIuNS0yMDEuNVQ0ODgtODAwcS0xMzYgMC0yMzIgOTN0LTk2IDIyN3EwIDEzMyA5My41IDIyNi41VDQ4MC0xNjBaIi8+PC9zdmc+">Background: <span id="bgColorHex" style="cursor: pointer;" title="Click to copy">${bgColorHex}</span><div class="keyboard-shortcut style"> ⌘+C to copy</div></div>
+
     `;
     tooltip.style.left = `${x + 15}px`;
     tooltip.style.top = `${y + 15}px`;
@@ -97,8 +102,8 @@ document.addEventListener('copy', function(event) {
 
 tooltip.addEventListener('keydown', (event) => {
     if ((event.metaKey || event.ctrlKey) && event.key === 'c') {
-        const colorHex = document.getElementById('colorHex').textContent;
-        copyTextToClipboard(colorHex).then(() => {
+        const bgColorHex = document.getElementById('bgColorHex').textContent;
+        copyTextToClipboard(bgColorHex).then(() => {
             console.log('Color hex copied to clipboard');
             // Provide visual feedback that the color was copied, e.g., briefly changing the tooltip background color or showing a message
             tooltip.style.backgroundColor = "#e0e0e0"; // Temporary feedback
@@ -118,16 +123,6 @@ function copyTextToClipboard(text) {
         console.error('Failed to copy: ', err);
     });
 }
-
-// Event listener to handle copy on click
-document.addEventListener('click', (event) => {
-    if (event.target.id === 'colorHex') {
-        copyTextToClipboard(event.target.textContent);
-        // Optional: Provide feedback to the user that the text was copied
-        event.target.title = "Copied!";
-        setTimeout(() => event.target.title = "Click to copy", 2000); // Reset title after 2 seconds
-    }
-});
 
 
 let currentHoveredElement = null; // To keep track of the currently hovered element
