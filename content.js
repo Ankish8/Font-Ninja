@@ -1,3 +1,5 @@
+
+
 // Create tooltip element and apply class for styling
 const tooltip = document.createElement('div');
 tooltip.className = 'font-inspector-tooltip';
@@ -183,18 +185,27 @@ document.addEventListener('mouseover', (event) => {
 
 
 
-let isExtensionEnabled = false; // Default state is now false (disabled)
+let isExtensionEnabled = false;
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.hasOwnProperty('enabled')) {
-        isExtensionEnabled = request.enabled;
-        if (!isExtensionEnabled) {
-            // Optional: Clear any visible tooltips or underlines
-            hideTooltip();
-            removeUnderlineFromElement();
+chrome.storage.local.get('extensionEnabled', function(data) {
+    isExtensionEnabled = data.extensionEnabled || false;
+});
+
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+    for (let [key, { newValue }] of Object.entries(changes)) {
+        if (key === 'extensionEnabled') {
+            isExtensionEnabled = newValue;
+            if (!isExtensionEnabled) {
+                // Optional: Clear any visible tooltips or underlines
+                hideTooltip();
+                removeUnderlineFromElement();
+            }
         }
     }
 });
+
+// Rest of your content script code...
+
 
 document.addEventListener('mouseout', (event) => {
     if (!isExtensionEnabled) return; // Stop functionality if disabled
